@@ -535,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
@@ -550,7 +550,7 @@ PrefabInstance:
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LaunchScene
+      value: NewGame
       objectReference: {fileID: 0}
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
@@ -564,13 +564,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+    - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: Karl Test Scene
       objectReference: {fileID: 0}
     - target: {fileID: 2840075526611820477, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: UnityEngine.AudioClip, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2886521130649396839, guid: 96824d8669d61b948bcc349227e854c7,
         type: 3}
