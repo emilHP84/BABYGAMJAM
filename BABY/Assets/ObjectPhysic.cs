@@ -16,7 +16,8 @@ public class ObjectPhysic : MonoBehaviour
         rigidbody.AddForce(0, 100, 0);
         yield return new WaitForSeconds(1);
         rigidbody.AddTorque(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360));
-        rigidbody.AddForce(Random.Range(0, 500), 0, Random.Range(0, 500));
+        transform.rotation.Set(Random.Range(0, 360), transform.rotation.y, transform.rotation.z, transform.rotation.w);
+        rigidbody.AddForce(Random.Range(100, 500), 0, Random.Range(100, 500));
         yield return null;
     }
 }
