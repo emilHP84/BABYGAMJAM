@@ -2,22 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements.Experimental;
 
 public class MenuScript : MonoBehaviour
 {
     [SerializeField] CanvasGroup blackScreen;
-    List<MenuTransition> animStack;
+    List<MenuEvent> stack;
+    [SerializeField] AudioSource musique;
 
     void Awake()
     {
+        //DontDestroyOnLoad(this.gameObject);
         blackScreen.alpha = 1f;
-        animStack = new List<MenuTransition>();
+        musique.volume = 0;
+        stack = new List<MenuEvent>();
     }
 
     void Start()
     {
-        animStack.Add(new MenuTransition(1f,2f));
-        animStack.Add(new MenuTransition(0,2f));
+        stack.Add(new MenuTransition(1f,0,2f,Ease.InOutSine));
+        stack.Add(new MenuTransition(0,1f,2f,Ease.InOutSine));
         StartCoroutine(AnimationStackHandler());
     }
 
@@ -29,25 +34,67 @@ public class MenuScript : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         blackScreen.gameObject.SetActive(true);
         blackScreen.DOKill();
-        blackScreen.DOFade(animStack[0].desiredAlpha, animStack[0].duration);
-        yield return new WaitForSecondsRealtime(animStack[0].duration);
+        musique.DOKill();
+
+        switch (stack[0])
+        {
+            case MenuTransition:
+                MenuTransition menuTransition = (MenuTransition)stack[0];
+                musique.DOFade(menuTransition.musicVolume, menuTransition.duration);
+                blackScreen.DOFade(menuTransition.desiredAlpha, menuTransition.duration).SetEase(menuTransition.easing);
+                yield return new WaitForSecondsRealtime(menuTransition.duration);
+            break;
+            case SceneLoader:
+                SceneLoader sceneLoader = (SceneLoader)stack[0];
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneLoader.desiredScene,LoadSceneMode.Single);
+                while (!asyncLoad.isDone)
+                yield return null;
+            break;
+        }
+
+
         if (blackScreen.alpha==0) blackScreen.gameObject.SetActive(false);
-        animStack.RemoveAt(0);
+        stack.RemoveAt(0);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        while (animStack.Count<1) yield return null;
+        while (stack.Count<1) yield return null;
         StartCoroutine(AnimationStackHandler());
+    }
+
+    public void LaunchScene(string desiredScene)
+    {
+        stack.Add(new MenuTransition(1f,0,2f,Ease.InOutSine));
+        stack.Add(new SceneLoader(desiredScene));
     }
 
 
 } // FIN DU SCRIPT
 
-public class MenuTransition
+public class MenuEvent
 {
-    public MenuTransition(float myDesiredAlpha, float myDuration)
+
+}
+
+
+public class MenuTransition: MenuEvent
+{
+    public MenuTransition(float myDesiredAlpha, float myMusicVolume, float myDuration, Ease myEasing)
     {
         duration = myDuration;
         desiredAlpha = myDesiredAlpha;
+        easing = myEasing;
+        musicVolume = myMusicVolume;
     }
-    public float duration, desiredAlpha;
+    public float duration, desiredAlpha, musicVolume;
+    public Ease easing;
+}
+
+
+public class SceneLoader: MenuEvent
+{
+    public SceneLoader(string myScene)
+    {
+        desiredScene = myScene;
+    }
+    public string desiredScene;
 }
