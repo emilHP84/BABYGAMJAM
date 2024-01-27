@@ -1,17 +1,19 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class TelephoneScript : MonoBehaviour, IInteractable
 {
-    public enum State{ Idle, Ringing, Answered }
+    public enum State{ Idle, Ringing, Answered, Victory, GameOver }
     public State currentState = State.Idle;
 
     public float ringTimer = 10f;
-    public float idleTimermMin = 10f;
-    public float idleTimermMax = 60f;
+    public float idleTimermMin = 2f;
+    public float idleTimermMax = 5f;
     float timer;
 
-    public AudioSource ringAudio;
-    public AudioSource answeredAudio;
+    public AudioSource player;
+    public AudioClip ringAudio;
+    public AudioClip answeredAudio;
 
     bool timerEnded = false;
 
@@ -33,11 +35,27 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 StartTimer(ringTimer);
-                ringAudio.Play();
+                player.Stop();
+                player.loop = true;
+                player.clip = ringAudio;
+                player.Play();
             break;
 
             case State.Answered:
-                answeredAudio.Play();
+                player.Stop();
+                player.loop = false;
+                player.clip = answeredAudio;
+                player.Play();
+            break;
+
+            case State.Victory:
+                GAMEMANAGER.access.Victoire();
+                player.Stop();
+            break;
+
+            case State.GameOver:
+                GAMEMANAGER.access.GameOver();
+                player.Stop();
             break;
         }
         currentState = newState;
@@ -51,18 +69,26 @@ public class TelephoneScript : MonoBehaviour, IInteractable
         switch(currentState)
         {
             case State.Idle:
-                Debug.Log("Idle " + timer);
+                //Debug.Log("Idle " + timer);
                 if (timerEnded) SwitchTo(State.Ringing);
             break;
 
             case State.Ringing:
-                Debug.Log("Ringing " + timer);
-                if (timerEnded) { /*GAME OVER*/ }
+                //Debug.Log("Ringing " + timer);
+                if (timerEnded) { SwitchTo(State.GameOver); }
             break;
 
             case State.Answered:
-                Debug.Log("Answered " + timer);
-                if (!answeredAudio.isPlaying) SwitchTo(State.Idle);
+                //Debug.Log("Answered " + timer);
+                if (!player.isPlaying) SwitchTo(State.Idle);
+            break;
+
+            case State.Victory:
+
+            break;
+
+            case State.GameOver:
+
             break;
         }
     }
@@ -76,7 +102,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     }
 
     public void MouseClicDown() {
-        Debug.Log("test");
+        Debug.Log("Click téléphone");
         if (currentState == State.Ringing) SwitchTo(State.Answered);
     }
 }
