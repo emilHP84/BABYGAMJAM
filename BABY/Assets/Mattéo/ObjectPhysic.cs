@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPhysic : MonoBehaviour
 {
-    Rigidbody rigidbody;
+    new Rigidbody rigidbody;
 
     void Start()
     {
