@@ -23,5 +23,8 @@ public class ResetObjectPositionScript : MonoBehaviour
         this.transform.position = this.originalPosition;
 	    this.transform.rotation = this.originalRotation;
         Debug.Log("Reset de la position de " + gameObject.name + ".");
+        GetComponent<ObjectPhysic>().StopPhysics();
     }
-}
+
+
+} // FIN DU SCRIPT
