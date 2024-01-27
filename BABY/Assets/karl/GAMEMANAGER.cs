@@ -12,14 +12,21 @@ public class GAMEMANAGER : MonoBehaviour
     float tempsActuel;
     bool playing= false;
 
-    void Awake()
+    [RuntimeInitializeOnLoadMethod]
+    static void Singleton()
     {
-        if (access!=null) DestroyImmediate(this);
-        access = this;
+        Debug.Log("mon gros ROUDOUDOU");
+        if (access!=null) return;
+        GameObject gm = Instantiate(Resources.Load("GAME MANAGER", typeof(GameObject))) as GameObject;
+        GameObject.DontDestroyOnLoad(gm);
+        access = gm.GetComponent<GAMEMANAGER>();
+        Debug.Log(access);
     }
 
 
-    void Start()
+
+
+    public void DebutPartie()
     {
         tempsActuel = 0;
         StartCoroutine(PartieEnCours());
