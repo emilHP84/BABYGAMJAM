@@ -6,16 +6,23 @@ public class ResetObjectPositionScript : MonoBehaviour
 {
     private Vector3 originalPosition;
     private Quaternion originalRotation;
+    public CursorDetector cursorDetector;
+    public int clickBuffer = 5;
 
     void Start() {
         this.originalPosition = this.transform.position;
 	    this.originalRotation = this.transform.rotation;
     }
 
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Space) /* Remplacer par la condition de clic sur l'objet */)
+    void OnMouseOver()
+    {
+        if(Input.GetMouseButtonDown(0))
         {
-            ResetPosition();
+            clickBuffer--;
+            if(clickBuffer <= 0)
+            {
+                ResetPosition();
+            }
         }
     }
 

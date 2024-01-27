@@ -185,7 +185,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146626710}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -392,7 +392,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 90
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -419,13 +419,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478536142}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 56, z: 0}
+  m_LocalRotation: {x: 0.133111, y: 0.86618835, z: -0.3213584, w: 0.35878694}
+  m_LocalPosition: {x: -33, y: 27.4, z: 33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 40.71, y: 135, z: 0}
 --- !u!114 &478536146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +484,7 @@ GameObject:
   - component: {fileID: 479881355}
   - component: {fileID: 479881354}
   - component: {fileID: 479881353}
+  - component: {fileID: 479881359}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -617,6 +618,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479881359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479881352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0ec45cad17228e40a4671eeaa5babcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorDetector: {fileID: 0}
+  clickBuffer: 5
 --- !u!1 &539900320
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,6 +792,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ec45cad17228e40a4671eeaa5babcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorDetector: {fileID: 0}
+  clickBuffer: 5
 --- !u!1 &655276188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,7 +1079,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906469721}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
