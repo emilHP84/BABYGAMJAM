@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_OutLiner
+  m_Name: glow
   m_Shader: {fileID: -6465566751694194690, guid: d8ecf124b48a59e448a303895b4559ae,
     type: 3}
   m_Parent: {fileID: 0}

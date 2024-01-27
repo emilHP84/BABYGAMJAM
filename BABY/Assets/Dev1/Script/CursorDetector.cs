@@ -6,21 +6,42 @@ using static UnityEditor.PlayerSettings;
 
 public class CursorDetector : MonoBehaviour
 {
-    private Camera cam;
-    Vector3 pos = new Vector3(0, 0, 100);
+    public Camera cam;
 
-    void Awake() { cam = GetComponent<Camera>(); }
+    IInteractable currentinteract;
 
     void Start(){
+
     }
 
     void Update(){
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity)){
-            // appeler glowing
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            IInteractable interact = GetComponentInParent<IInteractable>();
+            if (interact != null)
+            {
+                if( interact != currentinteract)
+                {
+                    currentinteract = interact;
+                    interact.Glowing();
+                }
+            }
+            else if (currentinteract != null)
+            {
+                currentinteract.UnGlowing();
+                currentinteract = null;
+            }
+        }
+        else
+        {
+            if (currentinteract != null)
+            {
+                currentinteract.UnGlowing();
+                currentinteract = null;
+            }
+
         }
     }
-
-    
 }
