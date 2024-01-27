@@ -11,6 +11,12 @@ public class ObjectPhysic : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();                                                          
+        
+    }
+
+    public void StartProjection()
+    {
+        Debug.Log(transform.name);
         StartCoroutine(physicsProjection());
     }
 
