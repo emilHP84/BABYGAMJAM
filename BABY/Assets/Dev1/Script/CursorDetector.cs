@@ -8,6 +8,7 @@ public class CursorDetector : MonoBehaviour
 {
     public Camera cam;
     public Ray ray;
+    public LayerMask collideWith;
 
     IInteractable currentinteract;
 
@@ -18,20 +19,21 @@ public class CursorDetector : MonoBehaviour
     void Update(){
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, 500f, collideWith))
         {
-            IInteractable interact = GetComponentInParent<IInteractable>();
+            IInteractable interact = hit.transform.GetComponentInParent<IInteractable>();
             if (interact != null)
             {
                 if( interact != currentinteract)
                 {
                     currentinteract = interact;
-                    interact.Glowing();
+                    interact.MouseHover();
                 }
+                if (Input.GetMouseButtonDown(0)) interact.MouseClicDown();
             }
             else if (currentinteract != null)
             {
-                currentinteract.UnGlowing();
+                currentinteract.MouseUnhover();
                 currentinteract = null;
             }
         }
@@ -39,7 +41,7 @@ public class CursorDetector : MonoBehaviour
         {
             if (currentinteract != null)
             {
-                currentinteract.UnGlowing();
+                currentinteract.MouseUnhover();
                 currentinteract = null;
             }
 

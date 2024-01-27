@@ -17,20 +17,19 @@ public class ToGlow : MonoBehaviour, IInteractable
 
     }
 
-    private void Start(){
-        
-        
-       
-    }
-
-    public void Glowing(){
+    public void MouseHover(){
         //gameObject.GetComponent<Renderer>().materials = mat;
         gameObject.GetComponent<Renderer>().materials = matwithglow;
         Debug.Log("Glowing");
     }
 
-    public void UnGlowing(){
+    public void MouseUnhover(){
         gameObject.GetComponent<Renderer>().materials = matnormal;
         Debug.Log("Unglowing");
+    }
+
+    public void MouseClicDown()
+    {
+
     }
 }

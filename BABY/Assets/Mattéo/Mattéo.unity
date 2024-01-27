@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 146626714}
   - component: {fileID: 146626713}
   - component: {fileID: 146626712}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mur (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 257202284}
   - component: {fileID: 257202283}
   - component: {fileID: 257202282}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,6 +332,54 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1579589266}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &335488741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335488743}
+  - component: {fileID: 335488742}
+  m_Layer: 0
+  m_Name: CursorDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &335488742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335488741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a11a171e5f2bd40b2696d6b3cb1307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 478536144}
+  collideWith:
+    serializedVersion: 2
+    m_Bits: 55
+--- !u!4 &335488743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335488741}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &478536142
 GameObject:
@@ -630,7 +678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ec45cad17228e40a4671eeaa5babcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorDetector: {fileID: 0}
   clickBuffer: 5
 --- !u!1 &539900320
 GameObject:
@@ -792,7 +839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ec45cad17228e40a4671eeaa5babcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorDetector: {fileID: 0}
   clickBuffer: 5
 --- !u!1 &655276188
 GameObject:
@@ -806,7 +852,7 @@ GameObject:
   - component: {fileID: 655276192}
   - component: {fileID: 655276191}
   - component: {fileID: 655276190}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mur (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1075,7 @@ GameObject:
   - component: {fileID: 906469725}
   - component: {fileID: 906469724}
   - component: {fileID: 906469723}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mur (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1134,7 +1180,7 @@ GameObject:
   - component: {fileID: 988822084}
   - component: {fileID: 988822083}
   - component: {fileID: 988822082}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1236,7 +1282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1579589266}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TestRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,3 +1318,4 @@ SceneRoots:
   - {fileID: 539900326}
   - {fileID: 479881358}
   - {fileID: 1579589266}
+  - {fileID: 335488743}
