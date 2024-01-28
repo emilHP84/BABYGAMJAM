@@ -7,8 +7,11 @@ public enum BabyState{ idle, DoingTP, DoingLevitaion}
 public class BabyFSM : MonoBehaviour
 {
     public BabyState _babyState;
+
     [Header("Global Parameters")]
+    public List<GameObject> babyGraPhics = new List<GameObject>();
     public GameObject babyVisual;
+    public ParticleSystem particuleTP;
 
     [Header("Teleportations Parameters")]
     public List<GameObject> babyTransformTP = new List<GameObject>();
@@ -22,6 +25,7 @@ public class BabyFSM : MonoBehaviour
 
     public ObjectPhysic[] objetProjete;
     float chrono;
+    bool asAlreadyTP;
 
     Vector3 newPos;
     
@@ -29,6 +33,8 @@ public class BabyFSM : MonoBehaviour
     void Start(){
         switchTo(BabyState.idle);
         GAMEMANAGER.access.DebutPartie();
+        RandomizeMesh();
+        asAlreadyTP = false;
     }
 
     
@@ -48,13 +54,16 @@ public class BabyFSM : MonoBehaviour
             break;
 
             case BabyState.DoingTP:
+                if(particuleTP != null)particuleTP.Play();
                 if (chrono > teleportationDuration)
                 {
                     babyVisual.SetActive(false);
                     if (chrono < levitationDuration + 0.1f) return;
                     gameObject.transform.position = newPos;
+                    RandomizeMesh();
                     babyVisual.SetActive(true);
                     RandomizeState();
+                    if (particuleTP != null) particuleTP.Stop();
                 }
             break;
         }
@@ -68,16 +77,18 @@ public class BabyFSM : MonoBehaviour
         switch (_babyState)
         {
             case BabyState.idle:
-
-            break;
+                asAlreadyTP = false;
+                break;
 
             case BabyState.DoingLevitaion:
                 Debug.Log("coucou");
-               objetProjete[Random.Range(0, objetProjete.Length)].StartProjection();
+                asAlreadyTP = false;
+                objetProjete[Random.Range(0, objetProjete.Length)].StartProjection();
             break;
 
             case BabyState.DoingTP:
-                Vector3 newPos = babyTransformTP[Random.Range(0, babyTransformTP.Count)].transform.position;
+                asAlreadyTP = true;
+                newPos = babyTransformTP[Random.Range(0, babyTransformTP.Count)].transform.position;
             break;
         }
     }
@@ -87,5 +98,13 @@ public class BabyFSM : MonoBehaviour
         if (i == 0) switchTo(_babyState = BabyState.idle);
         else if (i == 1) switchTo(BabyState.DoingLevitaion);
         else if (i == 2) switchTo(_babyState = BabyState.DoingTP);
+    }
+
+    void RandomizeMesh(){
+        for (int i  = 0; i < babyGraPhics.Count; i ++){
+            babyGraPhics[i].gameObject.SetActive(false);
+        }
+        int j = Random.Range(0, 2);
+        babyGraPhics[j].gameObject.SetActive(true);
     }
 }
