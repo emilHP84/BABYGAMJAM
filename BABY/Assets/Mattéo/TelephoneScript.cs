@@ -28,6 +28,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
     bool timerEnded = false;
 
+    public ParticleSystem ringParticles;
+
     void Start() {
         chooseNextCall();
         SwitchTo(State.Idle);
@@ -47,6 +49,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 StartTimer(ringTimer);
+                ringParticles.Play();
                 player.Stop();
                 player.loop = true;
                 player.clip = ringAudio;
@@ -54,6 +57,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Taken:
+                ringParticles.Stop();
                 player.Stop();
                 player.loop = false;
                 player.clip = nextCall.dialogue;
