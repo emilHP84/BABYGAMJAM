@@ -156,8 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   ringTimer: 10
-  idleTimermMin: 2
-  idleTimermMax: 5
+  idleTimermMin: 5
+  idleTimermMax: 10
   player: {fileID: 3555937044451273442}
   ringAudio: {fileID: 8300000, guid: fb57e03c411e2fb4ea332c11a0024346, type: 3}
   dialogues:
