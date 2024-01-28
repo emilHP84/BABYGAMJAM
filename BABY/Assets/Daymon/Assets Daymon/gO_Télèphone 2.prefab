@@ -171,15 +171,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 94bace7d2a8961c4f9c8d9c9fb5d49b6, type: 3}
   - {fileID: 8300000, guid: 682d331821289c341ad04298aa7232ef, type: 3}
   - {fileID: 8300000, guid: 0ef64f6587c77b343b426ebe0af442f3, type: 3}
-  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
-  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
-  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
-  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
-  - {fileID: 8300000, guid: 80015015edd5c4d4cbca19ab9a32c258, type: 3}
-  - {fileID: 8300000, guid: 8adbfa7e7b959f84ba056602d51200a3, type: 3}
-  - {fileID: 8300000, guid: 5d72aeddb50ea984394f40662a308719, type: 3}
-  - {fileID: 8300000, guid: e842952320ccde94e8d101c81aa495b5, type: 3}
-  - {fileID: 8300000, guid: fef8704e11a540045b052a2c1980829f, type: 3}
+  - {fileID: 8300000, guid: 399afa802bea19a4fa5d3c83a826fae2, type: 3}
+  - {fileID: 8300000, guid: 45dfd53675e6e7647993b9fa9168e70f, type: 3}
+  - {fileID: 8300000, guid: 78dcb978a18b60140b2860c62b1a17b2, type: 3}
+  - {fileID: 8300000, guid: 24612c358e19e9e47a2b6a74cdffb8b8, type: 3}
+  - {fileID: 8300000, guid: 389e5c68987a7b7489a34ea9e9ace478, type: 3}
+  - {fileID: 8300000, guid: 54a090f49d8f096449f59c6c8c28ef33, type: 3}
+  - {fileID: 8300000, guid: 8a2d832db36fe02419839baf970a89e5, type: 3}
   ringParticles: {fileID: 4920508549619360286}
 --- !u!82 &3555937044451273442
 AudioSource:
