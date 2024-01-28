@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,7 @@ public class GAMEMANAGER : MonoBehaviour
     [RuntimeInitializeOnLoadMethod]
     static void Singleton()
     {
+        if (SceneManager.GetActiveScene().buildIndex>0) SceneManager.LoadScene(0);
         Debug.Log("mon gros ROUDOUDOU");
         if (access!=null) return;
         GameObject gm = Instantiate(Resources.Load("GAME MANAGER", typeof(GameObject))) as GameObject;
@@ -26,10 +28,14 @@ public class GAMEMANAGER : MonoBehaviour
 
 
 
+
+
     public void DebutPartie()
     {
         tempsActuel = 0;
         StartCoroutine(PartieEnCours());
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
@@ -56,7 +62,10 @@ public class GAMEMANAGER : MonoBehaviour
         if (playing==false) return;
         playing = false;
         Debug.Log("GAME OVER");
+        GetComponent<MenuScript>().GameOver();
     }
+
+
 
 
 } // FIN DU SCRIPT

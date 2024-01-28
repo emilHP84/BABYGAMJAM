@@ -1,4 +1,5 @@
 using System.Transactions;
+using DG.Tweening;
 using UnityEngine;
 
 public class TelephoneScript : MonoBehaviour, IInteractable
@@ -7,9 +8,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     public State currentState = State.Idle;
 
     public float ringTimer = 10f;
-    public float idleTimermMin = 2f;
-    public float idleTimermMax = 5f;
-    float timer;
+    public float idleTimermMin = 5f;
+    public float idleTimermMax = 10f;
+    float timer = 15f;
 
     public AudioSource player;
 
@@ -44,10 +45,17 @@ public class TelephoneScript : MonoBehaviour, IInteractable
         switch(newState)
         {
             case State.Idle:
-                StartTimer(Random.Range(idleTimermMin, idleTimermMax));
+                ringParticles.Stop();
+                player.Stop();
+                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1);
+                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0f,0.036f,0f), 1);
+                float newTimer = Random.Range(idleTimermMin, idleTimermMax);
+                StartTimer(newTimer);
+                Debug.Log("sonnerie dans "+newTimer+" secondes");
             break;
 
             case State.Ringing:
+                Debug.Log("LE TÉLÉPHONE SONNE");
                 StartTimer(ringTimer);
                 ringParticles.Play();
                 player.Stop();
@@ -57,6 +65,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Taken:
+                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(150f, 0f, 0f), 1);
+                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0.0560000017f,1.72099996f,0.574000001f), 1);
                 ringParticles.Stop();
                 player.Stop();
                 player.loop = false;
@@ -100,7 +110,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 //Debug.Log("Ringing " + timer);
-                if (timerEnded && nextCall.hasToBeAnswered) { SwitchTo(State.GameOver); }
+                if (timerEnded) SwitchTo(State.GameOver);
+                //else if (timerEnded && !nextCall.hasToBeAnswered) SwitchTo(State.Idle);
             break;
 
             case State.Taken:
@@ -143,9 +154,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 nextCall.dialogue = dialogues[i];
                 nextCall.answer = dialogues[i+4];
             } else {
-                int i = Random.Range(9,13);
+                int i = Random.Range(9,12);
                 nextCall.dialogue = dialogues[i];
-                nextCall.answer = dialogues[i+5];
+                nextCall.answer = dialogues[i+4];
         }
         } while (currentCall.dialogue == nextCall.dialogue);
     }
