@@ -14,7 +14,7 @@ public class BabyFSM : MonoBehaviour
     public ParticleSystem particuleTP;
 
     [Header("Teleportations Parameters")]
-    public Transform[] babyTransformTP;
+    public Transform teleportLocations;
     public float teleportationDuration = 8f;
 
     [Header("Levitation Parameters")]
@@ -36,7 +36,7 @@ public class BabyFSM : MonoBehaviour
         GAMEMANAGER.access.DebutPartie();
         RandomizeMesh();
         asAlreadyTP = false;
-        newPos = babyTransformTP[0].position;
+        newPos = teleportLocations.GetChild(0).position;
     }
 
     
@@ -90,14 +90,12 @@ public class BabyFSM : MonoBehaviour
 
             case BabyState.DoingTP:
                 asAlreadyTP = true;
-                Vector3 chosingNewPosition = babyTransformTP[Random.Range(0, babyTransformTP.Length)].position;
+                Vector3 chosingNewPosition = teleportLocations.GetChild(Random.Range(0,teleportLocations.childCount)).position;
                 while (chosingNewPosition==newPos)
                 {
-                    chosingNewPosition = babyTransformTP[Random.Range(0, babyTransformTP.Length)].position;
+                    chosingNewPosition = teleportLocations.GetChild(Random.Range(0,teleportLocations.childCount)).position;
                 }
                 newPos = chosingNewPosition;
-
-                newPos = babyTransformTP[Random.Range(0, babyTransformTP.Length)].position;
             break;
         }
     }

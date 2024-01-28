@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _babyState: 0
-  babyGraPhics:
+  babyPoses:
   - {fileID: 6676530986615681708}
   - {fileID: 8533253950941718633}
   babyVisual: {fileID: 7883303306250027867}

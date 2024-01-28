@@ -9,7 +9,7 @@ public class ToGlow : MonoBehaviour, IInteractable
 
     Material[] matwithglow, matnormal;
     void Awake() {
-        rend = gameObject.GetComponent<Renderer>();
+        rend = gameObject.GetComponentInChildren<Renderer>();
         matwithglow = new Material[2];
         matwithglow[1] = Resources.Load<Material>("glow");
         matnormal = new Material[1];
@@ -19,12 +19,12 @@ public class ToGlow : MonoBehaviour, IInteractable
 
     public void MouseHover(){
         //gameObject.GetComponent<Renderer>().materials = mat;
-        gameObject.GetComponent<Renderer>().materials = matwithglow;
+        rend.materials = matwithglow;
         Debug.Log("Glowing");
     }
 
     public void MouseUnhover(){
-        gameObject.GetComponent<Renderer>().materials = matnormal;
+        rend.materials = matnormal;
         Debug.Log("Unglowing");
     }
 
