@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
+using System.Threading;
 
 public class MenuScript : MonoBehaviour
 {
@@ -11,11 +12,16 @@ public class MenuScript : MonoBehaviour
     List<MenuEvent> stack;
     [SerializeField] AudioSource musique;
 
+    AudioClip musicClip;
+    float musicTime;
+
+
     void Awake()
     {
         //DontDestroyOnLoad(this.gameObject);
         blackScreen.alpha = 1f;
         musique.volume = 0;
+        musicClip = musique.clip;
         stack = new List<MenuEvent>();
     }
 
@@ -30,8 +36,7 @@ public class MenuScript : MonoBehaviour
 
     IEnumerator AnimationStackHandler()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        CursorLocker(true);
         blackScreen.gameObject.SetActive(true);
         blackScreen.DOKill();
         musique.DOKill();
@@ -50,30 +55,75 @@ public class MenuScript : MonoBehaviour
                 while (!asyncLoad.isDone)
                 yield return null;
             break;
+            case AudioNarrative:
+                AudioNarrative audioNarrative = (AudioNarrative)stack[0];
+                musicTime = musique.time;
+                musique.clip = audioNarrative.clip;
+                musique.volume = 1f;
+                musique.Play();
+                musique.loop = false;
+                while (musique.isPlaying)
+                {
+                    if (Input.GetMouseButtonUp(0)) musique.Stop();
+                    yield return null;
+                }
+            break;
+            case WaitingTime:
+                WaitingTime waitTime = (WaitingTime)stack[0];
+                yield return new WaitForSecondsRealtime(waitTime.timer);
+            break;
+            case MusicResume:
+                musique.clip = musicClip;
+                musique.time = musicTime;
+                musique.Play();
+            break;
+            case CursorLock:
+                CursorLock locker = (CursorLock)stack[0];
+                CursorLocker(locker.wanted);
+            break;
+
         }
 
 
         if (blackScreen.alpha==0) blackScreen.gameObject.SetActive(false);
         stack.RemoveAt(0);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        CursorLocker(false);
         while (stack.Count<1) yield return null;
         StartCoroutine(AnimationStackHandler());
     }
 
-    public void LaunchScene(string desiredScene)
+
+    public void NewGame(AudioClip dialogueDebut)
     {
         stack.Add(new MenuTransition(1f,0,2f,Ease.InOutSine));
-        stack.Add(new SceneLoader(desiredScene));
+        stack.Add(new AudioNarrative(dialogueDebut));
+        stack.Add(new WaitingTime(1f));
+        stack.Add(new SceneLoader(1));
+    }
+
+    void CursorLocker(bool wanted)
+    {
+        Cursor.visible = !wanted;
+        Cursor.lockState = CursorLockMode.None;
+        if (wanted) Cursor.lockState = CursorLockMode.Locked;
     }
 
 
+
+
+
+
 } // FIN DU SCRIPT
+
+
+
 
 public class MenuEvent
 {
 
 }
+
+
 
 
 public class MenuTransition: MenuEvent
@@ -92,9 +142,48 @@ public class MenuTransition: MenuEvent
 
 public class SceneLoader: MenuEvent
 {
-    public SceneLoader(string myScene)
+    public SceneLoader(int myScene)
     {
         desiredScene = myScene;
     }
-    public string desiredScene;
+    public int desiredScene;
+}
+
+
+public class AudioNarrative: MenuEvent
+{
+    public AudioNarrative(AudioClip myClip)
+    {
+        clip = myClip;
+    }
+
+    public AudioClip clip;
+}
+
+public class MusicResume: MenuEvent
+{
+    public MusicResume()
+    {
+
+    }
+}
+
+
+public class WaitingTime: MenuEvent
+{
+    public WaitingTime(float myTimer)
+    {
+        timer = myTimer;
+    }
+    public float timer;
+}
+
+public class CursorLock: MenuEvent
+{
+    public CursorLock(bool myWanted)
+    {
+        wanted = myWanted;
+    }
+
+    public bool wanted;
 }
