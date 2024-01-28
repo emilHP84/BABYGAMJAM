@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,10 +27,14 @@ public class GAMEMANAGER : MonoBehaviour
 
 
 
+
+
     public void DebutPartie()
     {
         tempsActuel = 0;
         StartCoroutine(PartieEnCours());
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
@@ -56,7 +61,10 @@ public class GAMEMANAGER : MonoBehaviour
         if (playing==false) return;
         playing = false;
         Debug.Log("GAME OVER");
+        GetComponent<MenuScript>().GameOver();
     }
+
+
 
 
 } // FIN DU SCRIPT
