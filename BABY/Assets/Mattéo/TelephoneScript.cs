@@ -10,7 +10,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     public float ringTimer = 10f;
     public float idleTimermMin = 5f;
     public float idleTimermMax = 10f;
-    float timer;
+    float timer = 15f;
 
     public AudioSource player;
 
@@ -49,10 +49,13 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 player.Stop();
                 gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1);
                 gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0f,0.036f,0f), 1);
-                StartTimer(Random.Range(idleTimermMin, idleTimermMax));
+                float newTimer = Random.Range(idleTimermMin, idleTimermMax);
+                StartTimer(newTimer);
+                Debug.Log("sonnerie dans "+newTimer+" secondes");
             break;
 
             case State.Ringing:
+                Debug.Log("LE TÉLÉPHONE SONNE");
                 StartTimer(ringTimer);
                 ringParticles.Play();
                 player.Stop();
@@ -107,8 +110,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 //Debug.Log("Ringing " + timer);
-                if (timerEnded && nextCall.hasToBeAnswered) SwitchTo(State.GameOver);
-                else if (timerEnded && !nextCall.hasToBeAnswered) SwitchTo(State.Idle);
+                if (timerEnded) SwitchTo(State.GameOver);
+                //else if (timerEnded && !nextCall.hasToBeAnswered) SwitchTo(State.Idle);
             break;
 
             case State.Taken:

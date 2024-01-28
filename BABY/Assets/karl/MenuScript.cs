@@ -13,7 +13,7 @@ public class MenuScript : MonoBehaviour
     List<MenuEvent> stack;
     [SerializeField] AudioSource musique;
 
-    AudioClip menuMusic, gameOverSound;
+    [SerializeField]AudioClip menuMusic, gameOverSound;
     float musicTime;
 
     Camera menuCam;
@@ -69,6 +69,7 @@ public class MenuScript : MonoBehaviour
                 musicTime = musique.time;
                 musique.clip = audioNarrative.clip;
                 musique.volume = 1f;
+                musique.Stop();
                 musique.Play();
                 musique.loop = false;
                 while (musique.isPlaying)
@@ -117,6 +118,7 @@ public class MenuScript : MonoBehaviour
 
     public void NewGame(AudioClip dialogueDebut)
     {
+        Debug.Log("NEW GAME");
         stack.Add(new MenuTransition(1f,0,2f,Ease.InOutSine));
         stack.Add(new AudioNarrative(dialogueDebut));
         stack.Add(new WaitingTime(1f));
@@ -127,15 +129,21 @@ public class MenuScript : MonoBehaviour
 
     public void GameOver()
     {
+        stack.Add(new AudioNarrative(gameOverSound));
         stack.Add(new MenuTransition(1f,0,0.25f,Ease.InOutSine));
         stack.Add(new MenuDisplay(gameOverScreen.gameObject));
         stack.Add(new MenuTransition(0f,1,0.5f,Ease.InOutSine));
-        stack.Add(new AudioNarrative(gameOverSound));
+        stack.Add(new SceneLoader(0));
     }
 
     public void ReloadGame()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(0,LoadSceneMode.Single);
+        stack.Add(new MenuTransition(1f,0,0.25f,Ease.InOutSine));
+        stack.Add(new MenuDisplay(startScreen.gameObject));
+        musique.clip = menuMusic;
+        musique.Play();
+        stack.Add(new MenuTransition(0f,1,1.5f,Ease.InOutSine));
+        stack.Add(new CursorLock(false));
     }
 
     void HideMenus()
