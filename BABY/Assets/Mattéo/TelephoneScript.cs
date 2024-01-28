@@ -122,8 +122,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 //Debug.Log("Ringing " + timer);
-                if (timerEnded) SwitchTo(State.GameOver);
-                //else if (timerEnded && !nextCall.hasToBeAnswered) SwitchTo(State.Idle);
+                if (timerEnded && nextCall.hasToBeAnswered) SwitchTo(State.GameOver);
+                else if (timerEnded && !nextCall.hasToBeAnswered) { chooseNextCall(); SwitchTo(State.Idle); }
             break;
 
             case State.Taken:
@@ -132,7 +132,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Answering:
-                if (!player.isPlaying) { SwitchTo(State.Idle); chooseNextCall();}
+                if (!player.isPlaying) { chooseNextCall(); SwitchTo(State.Idle); }
             break;
 
             case State.Victory:
