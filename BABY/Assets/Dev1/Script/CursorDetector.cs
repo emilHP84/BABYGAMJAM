@@ -18,6 +18,7 @@ public class CursorDetector : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 500f, collideWith))
         {
+            if (Input.GetMouseButtonDown(0)) Debug.Log("clicked on "+hit.transform.name);
             IInteractable interact = hit.transform.GetComponentInParent<IInteractable>();
             if (interact != null)
             {
