@@ -160,7 +160,26 @@ MonoBehaviour:
   idleTimermMax: 5
   player: {fileID: 10996700}
   ringAudio: {fileID: 8300000, guid: fb57e03c411e2fb4ea332c11a0024346, type: 3}
-  answeredAudio: {fileID: 8300000, guid: f2c659940c9af574f85cdc4f45d05f4a, type: 3}
+  dialogues:
+  - {fileID: 8300000, guid: f2c659940c9af574f85cdc4f45d05f4a, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
 --- !u!65 &10996698
 BoxCollider:
   m_ObjectHideFlags: 0
