@@ -1577,6 +1577,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.036
       objectReference: {fileID: 0}
+    - target: {fileID: 5771849464849602290, guid: 0d6a026a1ba44a846a3ebef5f31ecf67,
+        type: 3}
+      propertyPath: idleTimermMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5771849464849602290, guid: 0d6a026a1ba44a846a3ebef5f31ecf67,
+        type: 3}
+      propertyPath: idleTimermMin
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6995540282419432797, guid: 0d6a026a1ba44a846a3ebef5f31ecf67,
         type: 3}
       propertyPath: m_LocalScale.x
