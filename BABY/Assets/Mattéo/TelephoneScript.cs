@@ -57,6 +57,18 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             case State.Ringing:
                 Debug.Log("LE TÉLÉPHONE SONNE");
                 StartTimer(ringTimer);
+                var col = ringParticles.colorOverLifetime;
+                col.enabled = true;
+                Gradient grad = new Gradient();
+                if (nextCall.hasToBeAnswered) 
+                {
+                    grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.red, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) } );
+                }
+                else
+                {
+                    grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.yellow, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) } );
+                }
+                col.color = grad;
                 ringParticles.Play();
                 player.Stop();
                 player.loop = true;
@@ -110,8 +122,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 //Debug.Log("Ringing " + timer);
-                if (timerEnded) SwitchTo(State.GameOver);
-                //else if (timerEnded && !nextCall.hasToBeAnswered) SwitchTo(State.Idle);
+                if (timerEnded && nextCall.hasToBeAnswered) SwitchTo(State.GameOver);
+                else if (timerEnded && !nextCall.hasToBeAnswered) { chooseNextCall(); SwitchTo(State.Idle); }
             break;
 
             case State.Taken:
@@ -120,7 +132,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Answering:
-                if (!player.isPlaying) { SwitchTo(State.Idle); chooseNextCall();}
+                if (!player.isPlaying) { chooseNextCall(); SwitchTo(State.Idle); }
             break;
 
             case State.Victory:
