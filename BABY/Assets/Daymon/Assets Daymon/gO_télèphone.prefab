@@ -168,6 +168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 443102034079141710}
+  - component: {fileID: 7498107159071010994}
   m_Layer: 0
   m_Name: "gO_t\xE9l\xE8phone"
   m_TagString: Untagged
@@ -183,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5622970624249166517}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.989159, z: -0, w: -0.14684866}
+  m_LocalRotation: {x: -0, y: -0.98915863, z: 0, w: -0.14685124}
   m_LocalPosition: {x: -13.94, y: 2.075, z: -5.45}
   m_LocalScale: {x: 0.6871132, y: 0.6871132, z: 0.6871132}
   m_ConstrainProportionsScale: 0
@@ -191,6 +192,44 @@ Transform:
   - {fileID: 2699991764601271403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -196.889, z: 0}
+--- !u!114 &7498107159071010994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5622970624249166517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e585d6c5c1526014884ccc157e4ad8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  ringTimer: 10
+  idleTimermMin: 2
+  idleTimermMax: 5
+  player: {fileID: 0}
+  ringAudio: {fileID: 0}
+  dialogues:
+  - {fileID: 8300000, guid: ebf0f3202759b5a4a87a7e51112a6b43, type: 3}
+  - {fileID: 8300000, guid: e80ee00cb750ea34c9e2d6bf8f9437e5, type: 3}
+  - {fileID: 8300000, guid: 42807d74df97e9348abb19014705f7d5, type: 3}
+  - {fileID: 8300000, guid: 089cfd927d2d73440ab5c3a3aff4a374, type: 3}
+  - {fileID: 8300000, guid: 7d6aff5e6fd8626459a1fa9d17afbf02, type: 3}
+  - {fileID: 8300000, guid: a41464d1839927a459c93bd17f29f02b, type: 3}
+  - {fileID: 8300000, guid: 37421efe2422ca048841e7e48044590c, type: 3}
+  - {fileID: 8300000, guid: 94bace7d2a8961c4f9c8d9c9fb5d49b6, type: 3}
+  - {fileID: 8300000, guid: 682d331821289c341ad04298aa7232ef, type: 3}
+  - {fileID: 8300000, guid: 0ef64f6587c77b343b426ebe0af442f3, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 80015015edd5c4d4cbca19ab9a32c258, type: 3}
+  - {fileID: 8300000, guid: 8adbfa7e7b959f84ba056602d51200a3, type: 3}
+  - {fileID: 8300000, guid: 5d72aeddb50ea984394f40662a308719, type: 3}
+  - {fileID: 8300000, guid: e842952320ccde94e8d101c81aa495b5, type: 3}
+  - {fileID: 8300000, guid: fef8704e11a540045b052a2c1980829f, type: 3}
 --- !u!1 &5865796201599731148
 GameObject:
   m_ObjectHideFlags: 0
