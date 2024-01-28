@@ -28,6 +28,7 @@ public class BabyFSM : MonoBehaviour
 
     void Start(){
         switchTo(BabyState.idle);
+        GAMEMANAGER.access.DebutPartie();
     }
 
     
