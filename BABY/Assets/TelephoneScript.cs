@@ -1,9 +1,9 @@
+using System.Transactions;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class TelephoneScript : MonoBehaviour, IInteractable
 {
-    public enum State{ Idle, Ringing, Answered, Victory, GameOver }
+    public enum State{ Idle, Ringing, Taken, Answering, Victory, GameOver }
     public State currentState = State.Idle;
 
     public float ringTimer = 10f;
@@ -12,12 +12,24 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     float timer;
 
     public AudioSource player;
+
+    //Sonnerie du téléphone
     public AudioClip ringAudio;
-    public AudioClip answeredAudio;
+
+    public AudioClip[] dialogues;
+
+    struct Call
+    {
+        public AudioClip dialogue;
+        public bool hasToBeAnswered;
+        public AudioClip answer;
+    }
+    Call nextCall;
 
     bool timerEnded = false;
 
     void Start() {
+        chooseNextCall();
         SwitchTo(State.Idle);
     }
 
@@ -41,10 +53,19 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 player.Play();
             break;
 
-            case State.Answered:
+            case State.Taken:
                 player.Stop();
                 player.loop = false;
-                player.clip = answeredAudio;
+                player.clip = nextCall.dialogue;
+                Debug.Log("Playing " + player.clip);
+                player.Play();
+            break;
+
+            case State.Answering:
+                player.Stop();
+                player.loop = false;
+                player.clip = nextCall.answer;
+                Debug.Log("Playing " + player.clip);
                 player.Play();
             break;
 
@@ -75,12 +96,16 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 //Debug.Log("Ringing " + timer);
-                if (timerEnded) { SwitchTo(State.GameOver); }
+                if (timerEnded && nextCall.hasToBeAnswered) { SwitchTo(State.GameOver); }
             break;
 
-            case State.Answered:
-                //Debug.Log("Answered " + timer);
-                if (!player.isPlaying) SwitchTo(State.Idle);
+            case State.Taken:
+                //Debug.Log("Taken " + timer);
+                if (!player.isPlaying) SwitchTo(State.Answering);
+            break;
+
+            case State.Answering:
+                if (!player.isPlaying) { SwitchTo(State.Idle); chooseNextCall();}
             break;
 
             case State.Victory:
@@ -94,15 +119,30 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     }
 
     public void MouseHover() {
-        
     }
 
     public void MouseUnhover() {
-        
     }
 
     public void MouseClicDown() {
         Debug.Log("Click téléphone");
-        if (currentState == State.Ringing) SwitchTo(State.Answered);
+        if (currentState == State.Ringing) SwitchTo(State.Taken);
+    }
+
+    void chooseNextCall() {
+        Call currentCall = nextCall;
+         // Pour ne pas sélectionner le même appel 2 fois de suite
+        do {
+            nextCall.hasToBeAnswered = (Random.value > 0.5f);
+            if(nextCall.hasToBeAnswered) {
+                int i = Random.Range(1,4);
+                nextCall.dialogue = dialogues[i];
+                nextCall.answer = dialogues[i+4];
+            } else {
+                int i = Random.Range(9,13);
+                nextCall.dialogue = dialogues[i];
+                nextCall.answer = dialogues[i+5];
+        }
+        } while (currentCall.dialogue == nextCall.dialogue);
     }
 }

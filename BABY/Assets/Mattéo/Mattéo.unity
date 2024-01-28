@@ -160,7 +160,26 @@ MonoBehaviour:
   idleTimermMax: 5
   player: {fileID: 10996700}
   ringAudio: {fileID: 8300000, guid: fb57e03c411e2fb4ea332c11a0024346, type: 3}
-  answeredAudio: {fileID: 8300000, guid: f2c659940c9af574f85cdc4f45d05f4a, type: 3}
+  dialogues:
+  - {fileID: 8300000, guid: ebf0f3202759b5a4a87a7e51112a6b43, type: 3}
+  - {fileID: 8300000, guid: e80ee00cb750ea34c9e2d6bf8f9437e5, type: 3}
+  - {fileID: 8300000, guid: 42807d74df97e9348abb19014705f7d5, type: 3}
+  - {fileID: 8300000, guid: 089cfd927d2d73440ab5c3a3aff4a374, type: 3}
+  - {fileID: 8300000, guid: 7d6aff5e6fd8626459a1fa9d17afbf02, type: 3}
+  - {fileID: 8300000, guid: a41464d1839927a459c93bd17f29f02b, type: 3}
+  - {fileID: 8300000, guid: 37421efe2422ca048841e7e48044590c, type: 3}
+  - {fileID: 8300000, guid: 94bace7d2a8961c4f9c8d9c9fb5d49b6, type: 3}
+  - {fileID: 8300000, guid: 682d331821289c341ad04298aa7232ef, type: 3}
+  - {fileID: 8300000, guid: 0ef64f6587c77b343b426ebe0af442f3, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 23a0eebbdaebb9f4586f5cc72d79f354, type: 3}
+  - {fileID: 8300000, guid: 80015015edd5c4d4cbca19ab9a32c258, type: 3}
+  - {fileID: 8300000, guid: 8adbfa7e7b959f84ba056602d51200a3, type: 3}
+  - {fileID: 8300000, guid: 5d72aeddb50ea984394f40662a308719, type: 3}
+  - {fileID: 8300000, guid: e842952320ccde94e8d101c81aa495b5, type: 3}
+  - {fileID: 8300000, guid: fef8704e11a540045b052a2c1980829f, type: 3}
 --- !u!65 &10996698
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -682,7 +701,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 90
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -708,7 +727,7 @@ Transform:
   m_GameObject: {fileID: 478536142}
   serializedVersion: 2
   m_LocalRotation: {x: 0.133111, y: 0.86618835, z: -0.3213584, w: 0.35878694}
-  m_LocalPosition: {x: -33, y: 27.4, z: 33}
+  m_LocalPosition: {x: -28.1, y: 35.5, z: 28.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
