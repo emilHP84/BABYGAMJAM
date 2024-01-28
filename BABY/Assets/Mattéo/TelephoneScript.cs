@@ -54,6 +54,18 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Ringing:
                 StartTimer(ringTimer);
+                var col = ringParticles.colorOverLifetime;
+                col.enabled = true;
+                Gradient grad = new Gradient();
+                if (nextCall.hasToBeAnswered) 
+                {
+                    grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.red, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) } );
+                }
+                else
+                {
+                    grad.SetKeys(new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.yellow, 1.0f) }, new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) } );
+                }
+                col.color = grad;
                 ringParticles.Play();
                 player.Stop();
                 player.loop = true;
