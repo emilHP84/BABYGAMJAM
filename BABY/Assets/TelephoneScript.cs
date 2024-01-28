@@ -1,3 +1,4 @@
+using System.Transactions;
 using UnityEngine;
 
 public class TelephoneScript : MonoBehaviour, IInteractable
@@ -129,15 +130,19 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     }
 
     void chooseNextCall() {
-        nextCall.hasToBeAnswered = (Random.value > 0.5f);
-        if(nextCall.hasToBeAnswered) {
-            int i = Random.Range(1,4);
-            nextCall.dialogue = dialogues[i];
-            nextCall.answer = dialogues[i+4];
-        } else {
-            int i = Random.Range(9,13);
-            nextCall.dialogue = dialogues[i];
-            nextCall.answer = dialogues[i+5];
+        Call currentCall = nextCall;
+         // Pour ne pas sélectionner le même appel 2 fois de suite
+        do {
+            nextCall.hasToBeAnswered = (Random.value > 0.5f);
+            if(nextCall.hasToBeAnswered) {
+                int i = Random.Range(1,4);
+                nextCall.dialogue = dialogues[i];
+                nextCall.answer = dialogues[i+4];
+            } else {
+                int i = Random.Range(9,13);
+                nextCall.dialogue = dialogues[i];
+                nextCall.answer = dialogues[i+5];
         }
+        } while (currentCall.dialogue == nextCall.dialogue);
     }
 }
