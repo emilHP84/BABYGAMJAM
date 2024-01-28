@@ -143,9 +143,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 nextCall.dialogue = dialogues[i];
                 nextCall.answer = dialogues[i+4];
             } else {
-                int i = Random.Range(9,13);
+                int i = Random.Range(9,12);
                 nextCall.dialogue = dialogues[i];
-                nextCall.answer = dialogues[i+5];
+                nextCall.answer = dialogues[i+4];
         }
         } while (currentCall.dialogue == nextCall.dialogue);
     }
