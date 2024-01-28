@@ -24,6 +24,7 @@ public class CursorDetector : MonoBehaviour
             {
                 if( interact != currentinteract)
                 {
+                    if (currentinteract!=null) currentinteract.MouseUnhover();
                     currentinteract = interact;
                     interact.MouseHover();
                 }
