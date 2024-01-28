@@ -1,4 +1,5 @@
 using System.Transactions;
+using DG.Tweening;
 using UnityEngine;
 
 public class TelephoneScript : MonoBehaviour, IInteractable
@@ -44,6 +45,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
         switch(newState)
         {
             case State.Idle:
+                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1);
+                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0f,0.036f,0f), 1);
                 StartTimer(Random.Range(idleTimermMin, idleTimermMax));
             break;
 
@@ -57,6 +60,8 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Taken:
+                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(150f, 0f, 0f), 1);
+                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0.0560000017f,1.72099996f,0.574000001f), 1);
                 ringParticles.Stop();
                 player.Stop();
                 player.loop = false;
