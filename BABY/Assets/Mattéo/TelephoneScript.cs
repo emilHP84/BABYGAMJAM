@@ -1,4 +1,3 @@
-using System.Transactions;
 using DG.Tweening;
 using UnityEngine;
 
@@ -13,6 +12,10 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     float timer = 15f;
 
     public AudioSource player;
+    public Transform combine;
+    Vector3 combineStartPos;
+    Vector3 combineStartRot;
+
 
     //Sonnerie du téléphone
     public AudioClip ringAudio;
@@ -32,8 +35,11 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     public ParticleSystem ringParticles;
 
     void Start() {
+        combineStartPos = combine.localPosition;
+        combineStartRot = combine.localEulerAngles;
         chooseNextCall();
         SwitchTo(State.Idle);
+
     }
 
     void StartTimer(float newTime) {
@@ -47,8 +53,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             case State.Idle:
                 ringParticles.Stop();
                 player.Stop();
-                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 1);
-                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0f,0.036f,0f), 1);
+                combine.DOKill();
+                combine.DOLocalRotate(combineStartRot, 1);
+                combine.DOLocalMove(combineStartPos, 1);
                 float newTimer = Random.Range(idleTimermMin, idleTimermMax);
                 StartTimer(newTimer);
                 Debug.Log("sonnerie dans "+newTimer+" secondes");
@@ -77,8 +84,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
             break;
 
             case State.Taken:
-                gameObject.transform.GetChild(1).transform.DOLocalRotate(new Vector3(150f, 0f, 0f), 1);
-                gameObject.transform.GetChild(1).transform.DOLocalMove(new Vector3(0.0560000017f,1.72099996f,0.574000001f), 1);
+                combine.DOKill();
+                combine.DOLocalRotate(new Vector3(150f, 0f, 0f), 1);
+                combine.DOLocalMove(new Vector3(0.0560000017f,1.72099996f,0.574000001f), 1);
                 ringParticles.Stop();
                 player.Stop();
                 player.loop = false;
