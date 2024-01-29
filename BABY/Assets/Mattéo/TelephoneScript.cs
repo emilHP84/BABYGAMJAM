@@ -119,7 +119,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     void Update() {
         timer -= Time.deltaTime;
 
-        timerEnded = timer <= 0;
+        timerEnded = (timer <= 0);
 
         switch(currentState)
         {
@@ -132,6 +132,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 //Debug.Log("Ringing " + timer);
                 if (timerEnded && nextCall.hasToBeAnswered) SwitchTo(State.GameOver);
                 else if (timerEnded && !nextCall.hasToBeAnswered) { chooseNextCall(); SwitchTo(State.Idle); }
+                Debug.Log("Timer " + timer);
             break;
 
             case State.Taken:
