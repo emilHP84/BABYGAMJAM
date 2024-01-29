@@ -1,42 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
-public enum BabyState{ idle, DoingTP, DoingLevitaion}
+public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject}
 public class BabyFSM : MonoBehaviour
 {
-    public BabyState _babyState;
+    public BabyState currentState;
 
     [Header("Global Parameters")]
-    public List<GameObject> babyPoses = new List<GameObject>();
-    public GameObject babyVisual;
-    public ParticleSystem particuleTP;
+    [SerializeField] Transform babyPoses;
+    [SerializeField] ParticleSystem particuleTP;
 
     [Header("Teleportations Parameters")]
-    public Transform teleportLocations;
-    public float teleportationDuration = 8f;
+    [SerializeField] Transform teleportLocations;
+    [SerializeField] float teleportationDuration = 8f;
 
-    [Header("Levitation Parameters")]
-    public float levitationDuration = 8f;
 
     [Header(" Idle Parameters")]
-    public float idleDuration = 5f;
+    [SerializeField] float idleDuration = 5f;
 
     public ObjectPhysic[] objetProjete;
     float chrono;
-    bool asAlreadyTP;
 
     Vector3 newPos;
     
 
     void Start()
     {
-        switchTo(BabyState.idle);
-        GAMEMANAGER.access.DebutPartie();
-        RandomizeMesh();
-        asAlreadyTP = false;
+        SwitchTo(BabyState.Idle);
+        ShowRandomPose();
         newPos = teleportLocations.GetChild(0).position;
+        GAMEMANAGER.access.DebutPartie();
     }
 
     
@@ -45,73 +38,87 @@ public class BabyFSM : MonoBehaviour
     {
         chrono += Time.deltaTime;
 
-        switch (_babyState)
+        switch (currentState) // UPDATE STATE
         {
-            case BabyState.idle:
-                if (chrono > idleDuration) RandomizeState();
+            case BabyState.Idle:
+                if (chrono > idleDuration)
+                {
+                    float randomizer = Random.value;
+                    if (randomizer>0.7f) SwitchTo(BabyState.LevitatingObject);
+                    else SwitchTo(BabyState.PreparingTP);
+                }
             break;
 
-            case BabyState.DoingLevitaion:
-                if (chrono > levitationDuration) RandomizeState();
+            case BabyState.LevitatingObject:
+            break;
+
+            case BabyState.PreparingTP:
+                if (particuleTP != null) particuleTP.Play();
+                if (chrono > teleportationDuration)
+                {
+                    SwitchTo(BabyState.Idle);
+                }
             break;
 
             case BabyState.DoingTP:
-                if(particuleTP != null)particuleTP.Play();
-                if (chrono > teleportationDuration)
-                {
-                    babyVisual.SetActive(false);
-                    if (chrono < teleportationDuration + 0.1f) return;
-                    gameObject.transform.position = newPos;
-                    RandomizeMesh();
-                    babyVisual.SetActive(true);
-                    RandomizeState();
-                    if (particuleTP != null) particuleTP.Stop();
-                }
+            
             break;
-        }
-    }
+        } // fin du switch
+    } // fin de Update()
 
-    void switchTo(BabyState newState)
+
+    void SwitchTo(BabyState newState)
     {
-        //Debug.Log(newState);
-        chrono = 0;
-        _babyState = newState;
-        switch (_babyState)
+        switch (currentState) // EXIT STATE FUNCTION
         {
-            case BabyState.idle:
-                asAlreadyTP = false;
-                break;
+            case BabyState.PreparingTP: if (particuleTP != null) particuleTP.Stop(); break;
+        }
 
-            case BabyState.DoingLevitaion:
-                //Debug.Log("coucou");
-                asAlreadyTP = false;
+        chrono = 0;
+        currentState = newState;
+
+        switch (newState) // ENTER STATE FUNCTION
+        {
+            case BabyState.Idle:
+            break;
+
+            case BabyState.LevitatingObject:
                 objetProjete[Random.Range(0, objetProjete.Length)].StartProjection();
             break;
 
+            case BabyState.PreparingTP:
+                if (particuleTP != null) particuleTP.Play();
+            break;
+
             case BabyState.DoingTP:
-                asAlreadyTP = true;
                 Vector3 chosingNewPosition = teleportLocations.GetChild(Random.Range(0,teleportLocations.childCount)).position;
                 while (chosingNewPosition==newPos)
-                {
                     chosingNewPosition = teleportLocations.GetChild(Random.Range(0,teleportLocations.childCount)).position;
-                }
                 newPos = chosingNewPosition;
+                
+                babyPoses.gameObject.SetActive(false);
+                //if (chrono < teleportationDuration + 0.1f) return;
+                gameObject.transform.position = newPos;
+                ShowRandomPose();
+                babyPoses.gameObject.SetActive(true);
+                SwitchTo(BabyState.Idle);
             break;
         }
+
     }
 
-    void RandomizeState(){
-        int i = Random.Range(0, 3);
-        if (i == 0) switchTo(_babyState = BabyState.idle);
-        else if (i == 1) switchTo(BabyState.DoingLevitaion);
-        else if (i == 2) if (asAlreadyTP) RandomizeState(); else switchTo(_babyState = BabyState.DoingTP);
+
+
+    void ShowRandomPose()
+    {
+        for (int i  = 0; i < babyPoses.childCount; i ++)
+            babyPoses.GetChild(i).gameObject.SetActive(false);
+        babyPoses.GetChild(Random.Range(0, babyPoses.childCount)).gameObject.SetActive(true);
     }
 
-    void RandomizeMesh(){
-        for (int i  = 0; i < babyPoses.Count; i ++){
-            babyPoses[i].gameObject.SetActive(false);
-        }
-        int j = Random.Range(0, babyPoses.Count);
-        babyPoses[j].gameObject.SetActive(true);
+    public void EndObjectLevitation()
+    {
+        SwitchTo(BabyState.Idle);
     }
-}
+
+} // FIN DU SCRIPT

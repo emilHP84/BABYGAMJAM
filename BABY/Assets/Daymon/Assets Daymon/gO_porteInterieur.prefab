@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8935843277252226379}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: gO_porteInterieur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8935843277252226379
 Transform:
@@ -42,12 +42,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7010234106220420414}
   - component: {fileID: 8790576985377738940}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7010234106220420414
 Transform:
@@ -95,12 +95,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6952380952754295527}
   - component: {fileID: 7797674782844807496}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6952380952754295527
 Transform:
@@ -148,12 +148,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8272367770681745037}
   - component: {fileID: 1727218163450959542}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8272367770681745037
 Transform:
@@ -203,6 +203,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Porte
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308416460013084360, guid: 71ffff7f1a8676e408336850ded4e603,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308416460013084360, guid: 71ffff7f1a8676e408336850ded4e603,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 6683394573260997746, guid: 71ffff7f1a8676e408336850ded4e603,
         type: 3}
