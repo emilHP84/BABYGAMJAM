@@ -15,10 +15,11 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     public Transform combine;
     Vector3 combineStartPos;
     Vector3 combineStartRot;
+    Vector3 combineStartScale;
 
 
     //Sonnerie du téléphone
-    public AudioClip ringAudio;
+    public AudioClip ringAudio, hangUpAudio;
 
     public AudioClip[] dialogues;
 
@@ -37,6 +38,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
     void Start() {
         combineStartPos = combine.localPosition;
         combineStartRot = combine.localEulerAngles;
+        combineStartScale = combine.localScale;
         chooseNextCall();
         SwitchTo(State.Idle);
 
@@ -48,6 +50,14 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
     void SwitchTo(State newState)
     {
+        switch (currentState)
+        {
+            case State.Answering:
+                Sound.access.PlayWithDelay(hangUpAudio,1f, 0.5f);
+            break;
+        }
+
+
         switch(newState)
         {
             case State.Idle:
@@ -56,6 +66,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 combine.DOKill();
                 combine.DOLocalRotate(combineStartRot, 1);
                 combine.DOLocalMove(combineStartPos, 1);
+                combine.DOScale(combineStartScale,1f);
                 float newTimer = Random.Range(idleTimermMin, idleTimermMax);
                 StartTimer(newTimer);
                 Debug.Log("sonnerie dans "+newTimer+" secondes");
@@ -85,19 +96,20 @@ public class TelephoneScript : MonoBehaviour, IInteractable
 
             case State.Taken:
                 combine.DOKill();
-                combine.DOLocalRotate(new Vector3(150f, 0f, 0f), 1);
-                combine.DOLocalMove(new Vector3(0.0560000017f,1.72099996f,0.574000001f), 1);
+                combine.DOLocalRotate(new Vector3(34f, -34f, 0f), 1f);
+                combine.DOLocalMove(new Vector3(-6f,10f,0), 1f).SetEase(Ease.OutBack);
+                combine.DOScale(6.7f,1f);
                 ringParticles.Stop();
                 player.Stop();
                 player.loop = false;
                 player.clip = nextCall.dialogue;
+                Sound.access.Play(hangUpAudio,1f);
                 Debug.Log("Playing " + player.clip);
                 player.Play();
             break;
 
             case State.Answering:
                 player.Stop();
-                player.loop = false;
                 player.clip = nextCall.answer;
                 Debug.Log("Playing " + player.clip);
                 player.Play();
@@ -132,7 +144,7 @@ public class TelephoneScript : MonoBehaviour, IInteractable
                 //Debug.Log("Ringing " + timer);
                 if (timerEnded && nextCall.hasToBeAnswered) SwitchTo(State.GameOver);
                 else if (timerEnded && !nextCall.hasToBeAnswered) { chooseNextCall(); SwitchTo(State.Idle); }
-                Debug.Log("Timer " + timer);
+                //Debug.Log("Timer " + timer);
             break;
 
             case State.Taken:

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject}
-public class BabyFSM : MonoBehaviour
+public class BabyFSM : MonoBehaviour, IInteractable
 {
     public BabyState currentState;
-
     [Header("Global Parameters")]
     [SerializeField] Transform babyPoses;
     [SerializeField] ParticleSystem particuleTP;
@@ -17,18 +17,27 @@ public class BabyFSM : MonoBehaviour
 
     [Header(" Idle Parameters")]
     [SerializeField] float idleDuration = 5f;
-
-    public ObjectPhysic[] objetProjete;
+    [SerializeField]Transform objetsAProjeter;
+    ObjectPhysic[] objetProjete;
     float chrono;
+    float chronoBlink;
 
     Vector3 newPos;
+    [SerializeField] AudioClip teleportSound;
+    [SerializeField] AudioClip[] babySounds;
+    [SerializeField] AudioSource tpChargeSound;
+    [SerializeField] GameObject spoofParticles;
     
+    void Awake()
+    {
+        newPos = teleportLocations.GetChild(0).position;
+        objetProjete = objetsAProjeter.GetComponentsInChildren<ObjectPhysic>();
+    }
 
     void Start()
     {
         SwitchTo(BabyState.Idle);
         ShowRandomPose();
-        newPos = teleportLocations.GetChild(0).position;
         GAMEMANAGER.access.DebutPartie();
     }
 
@@ -44,7 +53,7 @@ public class BabyFSM : MonoBehaviour
                 if (chrono > idleDuration)
                 {
                     float randomizer = Random.value;
-                    if (randomizer>0.7f) SwitchTo(BabyState.LevitatingObject);
+                    if (randomizer>0.5f) SwitchTo(BabyState.LevitatingObject);
                     else SwitchTo(BabyState.PreparingTP);
                 }
             break;
@@ -54,10 +63,13 @@ public class BabyFSM : MonoBehaviour
 
             case BabyState.PreparingTP:
                 if (particuleTP != null) particuleTP.Play();
-                if (chrono > teleportationDuration)
+                if (chronoBlink<chrono)
                 {
-                    SwitchTo(BabyState.Idle);
+                    babyPoses.gameObject.SetActive(!babyPoses.gameObject.activeSelf);
+                    chronoBlink += 0.1f;
                 }
+                if (chrono > teleportationDuration)
+                    SwitchTo(BabyState.DoingTP);      
             break;
 
             case BabyState.DoingTP:
@@ -67,11 +79,21 @@ public class BabyFSM : MonoBehaviour
     } // fin de Update()
 
 
+
+
+
+
     void SwitchTo(BabyState newState)
     {
+        Debug.Log("Switch from "+currentState+" to "+newState);
+
         switch (currentState) // EXIT STATE FUNCTION
         {
-            case BabyState.PreparingTP: if (particuleTP != null) particuleTP.Stop(); break;
+            case BabyState.PreparingTP:
+                if (particuleTP != null) particuleTP.Stop();
+                tpChargeSound.Pause();
+                babyPoses.gameObject.SetActive(true);
+            break;
         }
 
         chrono = 0;
@@ -80,6 +102,7 @@ public class BabyFSM : MonoBehaviour
         switch (newState) // ENTER STATE FUNCTION
         {
             case BabyState.Idle:
+                Sound.access.PlayWithDelay(babySounds[Random.Range(0,babySounds.Length)], .3f,Random.Range(0.5f,2f));
             break;
 
             case BabyState.LevitatingObject:
@@ -88,6 +111,8 @@ public class BabyFSM : MonoBehaviour
 
             case BabyState.PreparingTP:
                 if (particuleTP != null) particuleTP.Play();
+                tpChargeSound.Play();
+                chronoBlink = 1f;
             break;
 
             case BabyState.DoingTP:
@@ -95,16 +120,17 @@ public class BabyFSM : MonoBehaviour
                 while (chosingNewPosition==newPos)
                     chosingNewPosition = teleportLocations.GetChild(Random.Range(0,teleportLocations.childCount)).position;
                 newPos = chosingNewPosition;
-                
                 babyPoses.gameObject.SetActive(false);
                 //if (chrono < teleportationDuration + 0.1f) return;
-                gameObject.transform.position = newPos;
+                Sound.access.Play(teleportSound, 1f);
+                Instantiate(spoofParticles,transform.position,transform.rotation);
+                transform.position = newPos;
                 ShowRandomPose();
                 babyPoses.gameObject.SetActive(true);
+                Instantiate(spoofParticles,transform.position,transform.rotation);
                 SwitchTo(BabyState.Idle);
             break;
         }
-
     }
 
 
@@ -119,6 +145,25 @@ public class BabyFSM : MonoBehaviour
     public void EndObjectLevitation()
     {
         SwitchTo(BabyState.Idle);
+    }
+
+    public void MouseHover()
+    {
+
+    }
+
+    public void MouseUnhover()
+    {
+
+    }
+
+    public void MouseClicDown()
+    {
+        Sound.access.Play(babySounds[Random.Range(0,babySounds.Length)],1f);
+        if (currentState==BabyState.PreparingTP)
+        {
+            SwitchTo(BabyState.Idle);
+        }
     }
 
 } // FIN DU SCRIPT
