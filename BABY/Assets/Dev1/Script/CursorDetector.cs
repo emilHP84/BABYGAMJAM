@@ -1,4 +1,6 @@
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 public class CursorDetector : MonoBehaviour
@@ -7,43 +9,41 @@ public class CursorDetector : MonoBehaviour
     public Ray ray;
     public LayerMask collideWith;
 
-    IInteractable currentinteract;
+    IInteractable[] currentinteracts;
 
-    void Start(){
-
-    }
-
+ 
     void Update(){
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 500f, collideWith))
         {
             if (Input.GetMouseButtonDown(0)) Debug.Log("clicked on "+hit.transform.name);
-            IInteractable interact = hit.transform.GetComponentInParent<IInteractable>();
-            if (interact != null)
+            IInteractable[] interact = hit.transform.GetComponentsInParent<IInteractable>();
+            if (interact.Length>0)
             {
-                if( interact != currentinteract)
+                for (int i=0; i<interact.Length; i++) // Si un objet était sous la souris mais ne l'est plus, on le déselectionne
                 {
-                    if (currentinteract!=null) currentinteract.MouseUnhover();
-                    currentinteract = interact;
-                    interact.MouseHover();
+                    if (interact[i].Hovered==false) interact[i].MouseHover();
+                    if (Input.GetMouseButtonDown(0)) interact[i].MouseClicDown(); // Événement si on clic sur l'objet
                 }
-                if (Input.GetMouseButtonDown(0)) interact.MouseClicDown();
             }
-            else if (currentinteract != null)
+            if (currentinteracts!=null && currentinteracts.Length>0)
             {
-                currentinteract.MouseUnhover();
-                currentinteract = null;
+                for (int i=0; i<currentinteracts.Length;i++)
+                {
+                    if (!interact.Contains(currentinteracts[i])) currentinteracts[i].MouseUnhover();
+                }
             }
-        }
-        else
+            currentinteracts = interact;
+        } // Sinon, le raycast de la souris n'a rien touché
+        else if (currentinteracts!=null)
         {
-            if (currentinteract != null)
-            {
-                currentinteract.MouseUnhover();
-                currentinteract = null;
-            }
-
+            for (int i=0; i<currentinteracts.Length;i++) if (currentinteracts[i].Hovered) currentinteracts[i].MouseUnhover();
+            currentinteracts = null;     
         }
-    }
-}
+
+    } //Fin de Update()
+
+
+
+} // FIN DU SCRIPT

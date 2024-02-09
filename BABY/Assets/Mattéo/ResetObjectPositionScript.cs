@@ -19,12 +19,12 @@ public class ResetObjectPositionScript : MonoBehaviour, IInteractable
 
     public void MouseHover()
     {
-        Debug.Log("hover "+transform.name);
+        hovered = true;
     }
 
     public void MouseUnhover()
     {
-
+        hovered=false;
     }
 
     public void MouseClicDown()
@@ -42,8 +42,14 @@ public class ResetObjectPositionScript : MonoBehaviour, IInteractable
 	    this.transform.rotation = this.originalRotation;
         currentBuffer = clickBuffer;
         Debug.Log("Reset de la position de " + gameObject.name + ".");
-        GetComponent<ObjectPhysic>().StopPhysics();
+        GetComponent<ObjectPhysic>().ResetVelocity();
     }
 
+
+    bool hovered;
+    public bool Hovered
+    {
+        get {return hovered;}
+    }
 
 } // FIN DU SCRIPT

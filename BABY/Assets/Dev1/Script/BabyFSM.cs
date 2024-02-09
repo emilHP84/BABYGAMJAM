@@ -18,6 +18,7 @@ public class BabyFSM : MonoBehaviour, IInteractable
     [Header(" Idle Parameters")]
     [SerializeField] float idleDuration = 5f;
     [SerializeField]Transform objetsAProjeter;
+    List<Transform> objetsDispo;
     ObjectPhysic[] objetProjete;
     float chrono;
     float chronoBlink;
@@ -32,6 +33,8 @@ public class BabyFSM : MonoBehaviour, IInteractable
     {
         newPos = teleportLocations.GetChild(0).position;
         objetProjete = objetsAProjeter.GetComponentsInChildren<ObjectPhysic>();
+        objetsDispo = new List<Transform>();
+        foreach (Transform objet in objetsAProjeter) objetsDispo.Add(objet);
     }
 
     void Start()
@@ -149,12 +152,17 @@ public class BabyFSM : MonoBehaviour, IInteractable
 
     public void MouseHover()
     {
-
+        hovered=true;
     }
 
     public void MouseUnhover()
     {
+        hovered=false;
+    }
 
+    public void OnDisable()
+    {
+        hovered=false;
     }
 
     public void MouseClicDown()
@@ -164,6 +172,13 @@ public class BabyFSM : MonoBehaviour, IInteractable
         {
             SwitchTo(BabyState.Idle);
         }
+    }
+
+
+    bool hovered;
+    public bool Hovered
+    {
+        get {return hovered;}
     }
 
 } // FIN DU SCRIPT

@@ -23,32 +23,53 @@ public class ToGlow : MonoBehaviour, IInteractable
         }
     }
 
-    public void MouseHover(){
-        for (int i=0; i<rends.Length;i++)
-        rends[i].materials = mats[i].matwithglow;
-        Debug.Log("Glowing");
+    void OnDisable()
+    {
+        hovered=false;
+        Glow(false);
     }
 
-    public void MouseUnhover(){
-        for (int i=0; i<rends.Length;i++)
-        rends[i].materials = mats[i].matnormal;
-        Debug.Log("Unglowing");
+    public void MouseHover()
+    {
+        hovered=true;
+        if (this.enabled) Glow(true);
     }
+
+    public void MouseUnhover()
+    {
+        hovered=false;
+        Glow(false);
+    }
+
+    void Glow(bool desired)
+    {
+        for (int i=0; i<rends.Length;i++)
+        {
+            if (desired) rends[i].materials = mats[i].matwithglow;
+            else rends[i].materials = mats[i].matnormal;
+        }
+    }
+
 
     public void MouseClicDown()
     {
 
     }
-}
+
+
+    bool hovered;
+    public bool Hovered
+    {
+        get {return hovered;}
+    }
+} // FIN DU SCRIPT
 
 public class MaterialSwitch
 {
-    public MaterialSwitch()//Material matNormal, Material matWithGlow)
+    public MaterialSwitch()//Material matNormal, Material matWithGlow
     {
         matwithglow = new Material[2];
         matnormal = new Material[1];
-        //matnormal[0] = matwithglow[0] = matNormal;
-        //matwithglow[1] = matWithGlow;
     }
 
     public Material[] matwithglow, matnormal;

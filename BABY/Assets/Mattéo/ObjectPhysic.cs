@@ -1,22 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class ObjectPhysic : MonoBehaviour, IInteractable
 {
+    [Range(1f,1000f)][SerializeField] float breakVelocity = 1000f;
+    public enum State{Start,Ragdoll,Levitating,Ballistic,Destroyed}
+    public State currentState;
     new Rigidbody rigidbody;
     [Range(0f, 100f)] public float forcePower = 50;
     Vector3 force;
 
     public AudioSource woosh;
     static BabyFSM baby;
-    bool aborted = false;
     Vector3 startPos, startRot,startScale;
     [SerializeField]GameObject spoofParticles;
+    float chrono;
+    TrailRenderer trail;
+    ToGlow glow;
+    [SerializeField] ParticleSystem levitatingParticles;
 
     void Awake()
     {
+        glow = GetComponent<ToGlow>();
+        trail = GetComponentInChildren<TrailRenderer>();
         startPos = transform.position;
         startRot = transform.localEulerAngles;
         startScale = transform.localScale;
@@ -24,37 +33,25 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
         rigidbody = GetComponent<Rigidbody>();                                                          
     }
 
-    public void StartProjection()
+    void Start()
     {
-        Debug.Log(transform.name);
-        StartCoroutine(PhysicsProjection());
+        EnterState(State.Start);
     }
 
-    public IEnumerator PhysicsProjection()
+    public void StartProjection()
     {
-        aborted = false;
-        rigidbody.isKinematic = true;
-        transform.DOMoveY(transform.position.y + 2f,1f).SetEase(Ease.InOutCubic);
-        transform.DOLocalRotate(Random.insideUnitSphere * 720f,3f).SetEase(Ease.InSine);
-        //rigidbody.AddForce(0, 20f, 0, ForceMode.VelocityChange); 
-        float chrono = 3f;
-        while (chrono>0 && aborted==false)
-        {
-            chrono -=Time.deltaTime;
-            yield return null;
-        }
-        rigidbody.isKinematic = false;                         
-        if (aborted==false) LaunchObject();   
-        baby.EndObjectLevitation();                                                                                                            // Fin de la gestion de la physique
+        Debug.Log(transform.name+ " LEVITATION");
+        EnterState(State.Levitating);
     }
+
+
 
     void LaunchObject()
     {
         Instantiate(spoofParticles,transform.position,Quaternion.identity);
         transform.DOKill();
         rigidbody.isKinematic = false;
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity= Vector3.zero;
+        ResetVelocity();
         woosh.Play();
         rigidbody.AddTorque(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));    // Ajout d'une force de rotation
         force = new Vector3(Random.Range(-1f,1f), 0, Random.Range(-1f,1f));
@@ -66,7 +63,7 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
     public void AbortLaunch()
     {
         transform.DOKill();
-        aborted = true;
+        EnterState(State.Ragdoll);
     }
 
     public void ResetObject()
@@ -76,13 +73,12 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
         transform.localScale = startScale;
         transform.DOKill();
         rigidbody.isKinematic = false;
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
+        ResetVelocity();
     }
 
 
 
-    public void StopPhysics() // Fonction permettant l'arrêt total de la projection
+    public void ResetVelocity() // Fonction permettant l'arrêt total de la projection
     {
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
@@ -90,25 +86,143 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
 
     public void MouseHover()
     {
-
+        hovered=true;
     }
 
     public void MouseUnhover()
     {
-
+        hovered=false;
     }
 
     public void MouseClicDown()
     {
-        AbortLaunch();
+        switch(currentState)
+        {
+            case State.Start: break;
+            case State.Ragdoll: break;
+            case State.Levitating:
+                AbortLaunch();
+            break;
+            case State.Ballistic: break;
+            case State.Destroyed: break;
+        }
     }
+
 
     void OnCollisionEnter(Collision nouvelleCollision)
     {
-        if (nouvelleCollision.relativeVelocity.magnitude>10f)
+        float speed = nouvelleCollision.relativeVelocity.magnitude;
+
+        if (speed>10f && chrono>0.2f)
         {
+            chrono = 0;
             woosh.Play();
             Instantiate(spoofParticles,nouvelleCollision.contacts[0].point,Quaternion.identity);
         }
+
+        if (speed>breakVelocity) EnterState(State.Destroyed);
     }
+
+
+    void Update()
+    {
+        switch(currentState) // UPDATE FUNCTION
+        {
+            case State.Start:
+            break;
+
+            case State.Ragdoll:
+            break;
+
+            case State.Levitating:
+                chrono+=Time.deltaTime;
+                if (chrono>3f) EnterState(State.Ballistic);   
+            break;
+
+            case State.Ballistic:
+                chrono +=Time.deltaTime;
+                if (rigidbody.velocity.sqrMagnitude<0.1f) EnterState(State.Ragdoll);
+            break;
+
+            case State.Destroyed:
+            break;
+        }
+    }
+
+
+
+
+    void EnterState(State newState)
+    {
+        Debug.Log(transform.name+" becomes "+newState);
+        switch(currentState) // EXIT FUNCTION
+        {
+            case State.Start:
+            break;
+
+            case State.Ragdoll:
+            break;
+
+            case State.Levitating:
+                if (levitatingParticles) levitatingParticles.Stop();
+                baby.EndObjectLevitation();   
+            break;
+
+            case State.Ballistic:
+                if (trail) trail.enabled = false;
+            break;
+
+            case State.Destroyed:
+            break;
+        }
+
+        currentState = newState;
+        switch(newState) // START FUNCTION
+        {
+            case State.Start:
+                if (glow) glow.enabled = false;
+                transform.position = startPos;
+                transform.localEulerAngles = startRot;
+                transform.localScale = startScale;
+                rigidbody.isKinematic = false;
+                ResetVelocity();
+            break;
+
+            case State.Ragdoll:
+                if (glow) glow.enabled = true;
+                rigidbody.isKinematic = false;    
+                ResetVelocity();
+            break;
+
+            case State.Levitating:
+                if (glow) glow.enabled = true;
+                if (levitatingParticles) levitatingParticles.Play();
+                chrono = 0;               
+                rigidbody.isKinematic = true;
+                transform.DOMoveY(transform.position.y + 2f,1f).SetEase(Ease.InOutCubic);
+                transform.DOLocalRotate(Random.insideUnitSphere * 720f,3f).SetEase(Ease.InSine);
+            break;
+
+            case State.Ballistic:
+                if (glow) glow.enabled = false;
+                chrono = 0.2f;
+                if (trail) trail.enabled = true;
+                rigidbody.isKinematic = false;                         
+                LaunchObject();   
+            break;
+
+            case State.Destroyed:
+                if (glow) glow.enabled = false;
+                rigidbody.isKinematic = true;    
+            break;
+        }
+    } // Fin de EnterState
+
+
+    bool hovered;
+    public bool Hovered
+    {
+        get {return hovered;}
+    }
+
 } // FIN DU SCRIPT

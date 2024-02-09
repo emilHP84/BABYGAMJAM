@@ -166,11 +166,9 @@ public class TelephoneScript : MonoBehaviour, IInteractable
         }
     }
 
-    public void MouseHover() {
-    }
+    public void MouseHover() {hovered=true;}
 
-    public void MouseUnhover() {
-    }
+    public void MouseUnhover() {hovered=false;}
 
     public void MouseClicDown() {
         Debug.Log("Click téléphone");
@@ -193,4 +191,11 @@ public class TelephoneScript : MonoBehaviour, IInteractable
         }
         } while (currentCall.dialogue == nextCall.dialogue);
     }
-}
+
+
+    bool hovered;
+    public bool Hovered
+    {
+        get {return hovered;}
+    }
+}// FIN DU SCRIPT
