@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject}
@@ -18,7 +17,7 @@ public class BabyFSM : MonoBehaviour, IInteractable
     [Header(" Idle Parameters")]
     [SerializeField] float idleDuration = 5f;
     [SerializeField]Transform objetsAProjeter;
-    List<Transform> objetsDispo;
+    List<ObjectPhysic> objetsDispo;
     ObjectPhysic[] objetProjete;
     float chrono;
     float chronoBlink;
@@ -28,13 +27,15 @@ public class BabyFSM : MonoBehaviour, IInteractable
     [SerializeField] AudioClip[] babySounds;
     [SerializeField] AudioSource tpChargeSound;
     [SerializeField] GameObject spoofParticles;
+
+
     
     void Awake()
     {
         newPos = teleportLocations.GetChild(0).position;
         objetProjete = objetsAProjeter.GetComponentsInChildren<ObjectPhysic>();
-        objetsDispo = new List<Transform>();
-        foreach (Transform objet in objetsAProjeter) objetsDispo.Add(objet);
+        objetsDispo = new List<ObjectPhysic>();
+        foreach (ObjectPhysic objet in objetProjete) objetsDispo.Add(objet);
     }
 
     void Start()
@@ -109,7 +110,9 @@ public class BabyFSM : MonoBehaviour, IInteractable
             break;
 
             case BabyState.LevitatingObject:
-                objetProjete[Random.Range(0, objetProjete.Length)].StartProjection();
+                foreach (ObjectPhysic objet in objetsDispo)
+                    if (objet.currentState!=ObjectPhysic.State.Start) objetsDispo.Remove(objet);
+                objetsDispo[Random.Range(0, objetsDispo.Count)].StartProjection();
             break;
 
             case BabyState.PreparingTP:

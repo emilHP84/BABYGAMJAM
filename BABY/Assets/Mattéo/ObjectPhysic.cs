@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class ObjectPhysic : MonoBehaviour, IInteractable
 {
     [Range(1f,1000f)][SerializeField] float breakVelocity = 1000f;
-    public enum State{Start,Ragdoll,Levitating,Ballistic,Destroyed}
+    public enum State{Start,Ragdoll,Levitating,Ballistic,Resetting,Destroyed}
     public State currentState;
     new Rigidbody rigidbody;
     [Range(0f, 100f)] public float forcePower = 50;
@@ -21,6 +18,7 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
     TrailRenderer trail;
     ToGlow glow;
     [SerializeField] ParticleSystem levitatingParticles;
+    [SerializeField] GameObject breakParticles;
 
     void Awake()
     {
@@ -68,12 +66,8 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
 
     public void ResetObject()
     {
-        transform.position = startPos;
-        transform.localEulerAngles = startRot;
-        transform.localScale = startScale;
         transform.DOKill();
-        rigidbody.isKinematic = false;
-        ResetVelocity();
+        EnterState(State.Start);
     }
 
 
@@ -99,7 +93,9 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
         switch(currentState)
         {
             case State.Start: break;
-            case State.Ragdoll: break;
+            case State.Ragdoll:
+                EnterState(State.Resetting);
+            break;
             case State.Levitating:
                 AbortLaunch();
             break;
@@ -129,6 +125,7 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
         switch(currentState) // UPDATE FUNCTION
         {
             case State.Start:
+                if (rigidbody.velocity.sqrMagnitude>0.25f) EnterState(State.Ragdoll);
             break;
 
             case State.Ragdoll:
@@ -142,6 +139,9 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
             case State.Ballistic:
                 chrono +=Time.deltaTime;
                 if (rigidbody.velocity.sqrMagnitude<0.1f) EnterState(State.Ragdoll);
+            break;
+
+            case State.Resetting:
             break;
 
             case State.Destroyed:
@@ -170,6 +170,9 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
 
             case State.Ballistic:
                 if (trail) trail.enabled = false;
+            break;
+
+            case State.Resetting:
             break;
 
             case State.Destroyed:
@@ -211,12 +214,21 @@ public class ObjectPhysic : MonoBehaviour, IInteractable
                 LaunchObject();   
             break;
 
+            case State.Resetting:
+                transform.DOKill();
+                transform.DOMove(startPos,0.5f).OnComplete(ResetObject);
+                transform.DORotate(startRot,.25f);
+            break;
+
             case State.Destroyed:
                 if (glow) glow.enabled = false;
-                rigidbody.isKinematic = true;    
+                if (breakParticles) Instantiate(breakParticles,transform.position, transform.rotation);
+                rigidbody.isKinematic = true;
+                gameObject.SetActive(false);
             break;
         }
     } // Fin de EnterState
+
 
 
     bool hovered;
