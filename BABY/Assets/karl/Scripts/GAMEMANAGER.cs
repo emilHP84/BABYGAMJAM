@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GAMEMANAGER : MonoBehaviour
 {
@@ -38,13 +36,15 @@ public class GAMEMANAGER : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-
+    Image clockFill;
     IEnumerator PartieEnCours()
     {
         playing = true;
+        clockFill = GameObject.Find("Clockfill").GetComponent<Image>();
         while (tempsActuel< dureePartie)
         {
             tempsActuel += Time.deltaTime;
+            clockFill.fillAmount = ((int)tempsActuel)/dureePartie;
             yield return null;
         }
         if (playing) Victoire();

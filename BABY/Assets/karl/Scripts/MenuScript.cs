@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
-using System.Threading;
-using System.Runtime.ExceptionServices;
+using UnityEngine.UI;
+
 
 public class MenuScript : MonoBehaviour
 {
