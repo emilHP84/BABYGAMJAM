@@ -13,7 +13,7 @@ public class Sound : MonoBehaviour
     }
     public void Play(AudioClip desired)
     {
-        source.PlayOneShot(desired);
+        Play(desired, 1f);
     }
 
     public void Play(AudioClip desired, float volume)

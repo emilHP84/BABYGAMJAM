@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
-public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject}
+public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject, ReturningToCraddle}
 public class BabyFSM : MonoBehaviour, IInteractable
 {
     public BabyState currentState;
@@ -28,11 +29,15 @@ public class BabyFSM : MonoBehaviour, IInteractable
     [SerializeField] AudioClip[] babySounds;
     [SerializeField] AudioSource tpChargeSound;
     [SerializeField] GameObject spoofParticles;
+    Vector3 startPos;
+
+    [SerializeField]GameObject colliders;
 
 
     
     void Awake()
     {
+        startPos = transform.position;
         newPos = teleportLocations.GetChild(0).position;
         objetProjete = objetsAProjeter.GetComponentsInChildren<ObjectPhysic>();
         objetsDispo = new List<ObjectPhysic>();
@@ -99,6 +104,9 @@ public class BabyFSM : MonoBehaviour, IInteractable
                 tpChargeSound.Pause();
                 babyPoses.gameObject.SetActive(true);
             break;
+            case BabyState.ReturningToCraddle:
+                colliders.SetActive(true);
+            break;
         }
 
         chrono = 0;
@@ -138,6 +146,14 @@ public class BabyFSM : MonoBehaviour, IInteractable
                 Instantiate(spoofParticles,transform.position,transform.rotation);
                 SwitchTo(BabyState.Idle);
             break;
+
+            case BabyState.ReturningToCraddle:
+            colliders.SetActive(false);
+            transform.DOKill();
+            transform.DOLocalRotate(Vector3.up*360f,0.5f,RotateMode.LocalAxisAdd);
+            transform.DOJump(startPos,2f,1,0.5f).OnComplete(EndObjectLevitation);
+            //transform.DOMove(startPos,0.5f).SetEase(Ease.InOutSine).OnComplete(EndObjectLevitation);
+            break;
         }
     }
 
@@ -170,17 +186,20 @@ public class BabyFSM : MonoBehaviour, IInteractable
         hovered=false;
     }
 
+    [SerializeField] Transform babyPivot;
+
     public void MouseClicDown()
     {
-        babyPoses.localScale = Vector3.one;
-        babyPoses.DOKill();
-        babyPoses.DOPunchScale(Vector3.one*0.1f,1f,4,0);
+        babyPivot.localScale = Vector3.one;
+        babyPivot.DOKill();
+        babyPivot.DOPunchScale(Vector3.one*0.1f,1f,4,0);
 
         Sound.access.Play(babySounds[Random.Range(0,babySounds.Length)],1f);
         if (currentState==BabyState.PreparingTP)
         {
             SwitchTo(BabyState.Idle);
         }
+        else if (transform.position!=startPos) SwitchTo(BabyState.ReturningToCraddle);
     }
 
 

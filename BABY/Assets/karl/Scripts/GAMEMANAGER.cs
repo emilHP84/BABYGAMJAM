@@ -15,7 +15,6 @@ public class GAMEMANAGER : MonoBehaviour
     static void Singleton()
     {
         if (SceneManager.GetActiveScene().buildIndex>0) SceneManager.LoadScene(0);
-        Debug.Log("mon gros ROUDOUDOU");
         if (access!=null) return;
         GameObject gm = Instantiate(Resources.Load("GAME MANAGER", typeof(GameObject))) as GameObject;
         GameObject.DontDestroyOnLoad(gm);

@@ -25,7 +25,7 @@ public class CursorDetector : MonoBehaviour
 
             if (interact.Length>0)
             {
-                if (isClicking) Sound.access.Play(clicSound,1f);
+                if (isClicking) Sound.access.Play(clicSound,.3f);
 
                 for (int i=0; i<interact.Length; i++) // Si un objet était sous la souris mais ne l'est plus, on le déselectionne
                 {

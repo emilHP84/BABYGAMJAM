@@ -201,7 +201,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0.5}
@@ -292,7 +292,7 @@ MonoBehaviour:
   babyPoses: {fileID: 6626079721819184058}
   particuleTP: {fileID: 1615846993313397736}
   teleportLocations: {fileID: 0}
-  teleportationDuration: 8
+  teleportationDuration: 2
   idleDuration: 5
   objetsAProjeter: {fileID: 0}
   teleportSound: {fileID: 8300000, guid: fd5a0fb347fc93544aee9c8ffa737fd1, type: 3}
@@ -303,6 +303,8 @@ MonoBehaviour:
   tpChargeSound: {fileID: 4134122242263199170}
   spoofParticles: {fileID: 1262437420777934463, guid: dec6312bb2a721d41933a5bd37e9f73e,
     type: 3}
+  colliders: {fileID: 3511040228381466627}
+  babyPivot: {fileID: 578995975993084273}
 --- !u!1 &6676530986615681708
 GameObject:
   m_ObjectHideFlags: 0
