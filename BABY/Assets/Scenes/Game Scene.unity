@@ -725,31 +725,6 @@ PrefabInstance:
       propertyPath: teleportLocations
       value: 
       objectReference: {fileID: 615302511}
-    - target: {fileID: 3018382558648333414, guid: 7ee2be3e17a5b2042ab549a06444c53d,
-        type: 3}
-      propertyPath: objetProjete.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3018382558648333414, guid: 7ee2be3e17a5b2042ab549a06444c53d,
-        type: 3}
-      propertyPath: objetProjete.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3018382558648333414, guid: 7ee2be3e17a5b2042ab549a06444c53d,
-        type: 3}
-      propertyPath: objetProjete.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3018382558648333414, guid: 7ee2be3e17a5b2042ab549a06444c53d,
-        type: 3}
-      propertyPath: objetProjete.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3018382558648333414, guid: 7ee2be3e17a5b2042ab549a06444c53d,
-        type: 3}
-      propertyPath: objetProjete.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4345524789847399033, guid: 7ee2be3e17a5b2042ab549a06444c53d,
         type: 3}
       propertyPath: m_Name
@@ -3710,6 +3685,7 @@ MonoBehaviour:
   collideWith:
     serializedVersion: 2
     m_Bits: 55
+  clicSound: {fileID: 8300000, guid: d5a35a8bc4cd9ad4d8fffcffb2389780, type: 3}
 --- !u!4 &1665822353
 Transform:
   m_ObjectHideFlags: 0

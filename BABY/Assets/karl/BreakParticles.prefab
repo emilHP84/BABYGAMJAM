@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4975177449573476483}
   - component: {fileID: 7876929653071567697}
-  m_Layer: 0
+  - component: {fileID: 147434565976085598}
+  m_Layer: 7
   m_Name: BreakParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +49,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3559772d34d19040afc6f424818908f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &147434565976085598
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262437420777934463}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 100, y: 50, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3175477947615539494
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3289041963723604529}
   - component: {fileID: 8247427136891081086}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +210,7 @@ GameObject:
   - component: {fileID: 4372512794319043365}
   - component: {fileID: 387283315780195289}
   - component: {fileID: 9127366498986463771}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5086,7 +5108,7 @@ GameObject:
   - component: {fileID: 3644756218640844086}
   - component: {fileID: 3958054516483720660}
   - component: {fileID: 357959767806224517}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9916,7 +9938,7 @@ GameObject:
   - component: {fileID: 7663752559132530744}
   - component: {fileID: 2277995716338260092}
   - component: {fileID: 5958117125732183424}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10021,8 +10043,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 7
-      minScalar: 5
+      scalar: 180
+      minScalar: 180
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -13531,7 +13553,7 @@ ParticleSystem:
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
     multiplyColliderForceByParticleSpeed: 0
-    multiplyColliderForceByCollisionAngle: 1
+    multiplyColliderForceByCollisionAngle: 0
     m_Planes: []
     m_Dampen:
       serializedVersion: 2
@@ -13698,22 +13720,23 @@ ParticleSystem:
     collidesWith:
       serializedVersion: 2
       m_Bits: 4294967295
-    maxCollisionShapes: 256
+    maxCollisionShapes: 50
     quality: 1
-    voxelSize: 0.5
+    voxelSize: 0.1
     collisionMessages: 0
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
     enter: 0
-    exit: 0
+    exit: 1
     colliderQueryMode: 0
     radiusScale: 1
-    primitives: []
+    primitives:
+    - {fileID: 4975177449573476483}
   SubModule:
     serializedVersion: 2
     enabled: 0

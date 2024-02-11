@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public enum BabyState{Idle, PreparingTP, DoingTP, LevitatingObject}
 public class BabyFSM : MonoBehaviour, IInteractable
@@ -110,8 +111,9 @@ public class BabyFSM : MonoBehaviour, IInteractable
             break;
 
             case BabyState.LevitatingObject:
-                foreach (ObjectPhysic objet in objetsDispo)
-                    if (objet.currentState!=ObjectPhysic.State.Start) objetsDispo.Remove(objet);
+                objetsDispo = new List<ObjectPhysic>();
+                for (int i=0; i<objetProjete.Length;i++)
+                    if (objetProjete[i].currentState!=ObjectPhysic.State.Start) objetsDispo.Add(objetProjete[i]);
                 objetsDispo[Random.Range(0, objetsDispo.Count)].StartProjection();
             break;
 
@@ -170,6 +172,10 @@ public class BabyFSM : MonoBehaviour, IInteractable
 
     public void MouseClicDown()
     {
+        babyPoses.localScale = Vector3.one;
+        babyPoses.DOKill();
+        babyPoses.DOPunchScale(Vector3.one*0.1f,1f,4,0);
+
         Sound.access.Play(babySounds[Random.Range(0,babySounds.Length)],1f);
         if (currentState==BabyState.PreparingTP)
         {

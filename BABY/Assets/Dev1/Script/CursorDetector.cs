@@ -11,20 +11,26 @@ public class CursorDetector : MonoBehaviour
 
     IInteractable[] currentinteracts;
 
+    [SerializeField] AudioClip clicSound;
+
  
     void Update(){
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 500f, collideWith))
         {
-            if (Input.GetMouseButtonDown(0)) Debug.Log("clicked on "+hit.transform.name);
+            bool isClicking = Input.GetMouseButtonDown(0);
+            if (isClicking) Debug.Log("clicked on "+hit.transform.name);
             IInteractable[] interact = hit.transform.GetComponentsInParent<IInteractable>();
+
             if (interact.Length>0)
             {
+                if (isClicking) Sound.access.Play(clicSound,1f);
+
                 for (int i=0; i<interact.Length; i++) // Si un objet était sous la souris mais ne l'est plus, on le déselectionne
                 {
                     if (interact[i].Hovered==false) interact[i].MouseHover();
-                    if (Input.GetMouseButtonDown(0)) interact[i].MouseClicDown(); // Événement si on clic sur l'objet
+                    if (isClicking) interact[i].MouseClicDown(); // Événement si on clic sur l'objet
                 }
             }
             if (currentinteracts!=null && currentinteracts.Length>0)
